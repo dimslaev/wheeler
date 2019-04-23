@@ -1,0 +1,23 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 100px;
+}
+
+section:first-child {
+  background: lightcoral;
+}
+
+section:nth-child(2) {
+  background: lightblue;
+}
+
+section:nth-child(3) {
+  background: lightgreen;
+}
