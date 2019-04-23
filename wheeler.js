@@ -1,148 +1,98 @@
-var scrollings = [];
-var preventNormalScroll = true;
-var wheelWorks = true;
-var wheelCount = 0;
-var duration = 600;
-var prevTime = new Date().getTime();
-var sections = document.getElementsByTagName("section");
-
-function MouseWheelHandler(e) {
-  var curTime = new Date().getTime();
-
-  e = e || window.event;
-  var value = e.wheelDelta || -e.deltaY || -e.detail;
-  var delta = Math.max(-1, Math.min(1, value));
-
-  if (scrollings.length > 149) {
-    scrollings.shift();
+class Wheeler {
+  constructor(options) {
+    this.preventNormalScroll = true;
+    this.wheelCountMax = options.wheelCountMax || 3;
+    this.wheelCount = 0;
+    this.wheelWorks = true;
+    this.onWheelStart = options.onStart;
+    this.onWheelEnd = options.onEnd;
+    this.duration = options.duration || 600;
+    this.scrollings = [];
+    this.prevTime = new Date().getTime();
+    this.lastDirection = "down";
   }
 
-  scrollings.push(Math.abs(value));
-
-  if (preventNormalScroll) {
-    event.preventDefault();
+  init() {
+    window.addEventListener("wheel", this.wheelHandler, { passive: false });
   }
 
-  var timeDiff = curTime - prevTime;
-  prevTime = curTime;
+  wheelHandler = e => {
+    let curTime = new Date().getTime();
 
-  // enough to be considered a different scrolling action)
-  if (timeDiff > 200) {
-    scrollings = [];
-  }
+    let value = e.wheelDelta || -e.deltaY || -e.detail;
+    let delta = Math.max(-1, Math.min(1, value));
 
-  if (wheelWorks) {
-    var averageEnd = getAverage(scrollings, 10);
-    var averageMiddle = getAverage(scrollings, 70);
-    var isAccelerating = averageEnd >= averageMiddle;
+    if (this.scrollings.length > 149) {
+      this.scrollings.shift();
+    }
 
-    // avoid double swipes...
-    if (isAccelerating) {
-      if (delta < 0) {
-        scrolling("down");
-      } else {
-        scrolling("up");
+    this.scrollings.push(Math.abs(value));
+
+    if (this.preventNormalScroll) {
+      event.preventDefault();
+    }
+
+    let timeDiff = curTime - this.prevTime;
+    this.prevTime = curTime;
+
+    // enough to be considered a different scrolling action
+    if (timeDiff > 200) {
+      this.scrollings = [];
+    }
+
+    if (this.wheelWorks) {
+      let averageEnd = utils.getAverage(this.scrollings, 10);
+      let averageMiddle = utils.getAverage(this.scrollings, 70);
+      let isAccelerating = averageEnd >= averageMiddle;
+
+      // avoid double swipes...
+      if (isAccelerating) {
+        if (delta < 0) {
+          this.wheel("down");
+        } else {
+          this.wheel("up");
+        }
       }
     }
-  }
 
-  return false;
-}
-
-function scrolling(direction) {
-  console.log(`scrolling ${direction}`);
-
-  wheelWorks = false;
-
-  triggerEvent("wheeler", {
-    detail: { direction, duration, wheelCount }
-  });
-
-  setTimeout(function() {
-    setTimeout(function() {
-      wheelWorks = true;
-      if (direction === "down") wheelCount++;
-      else wheelCount--;
-    }, 30);
-  }, duration);
-}
-
-function scrollTo(to, duration, callback) {
-  var start = getScrollTop();
-  var change = to - start;
-  var currentTime = 0;
-  var increment = 20;
-  activeAnimation = true;
-
-  var easeInOutCubic = function(t, b, c, d) {
-    if ((t /= d / 2) < 1) return (c / 2) * t * t * t + b;
-    return (c / 2) * ((t -= 2) * t * t + 2) + b;
+    return false;
   };
 
-  var animateScroll = function() {
-    if (activeAnimation) {
-      var val = to;
+  wheel(direction) {
+    this.wheelWorks = false;
 
-      currentTime += increment;
+    this.updateWheelCount(direction);
 
-      if (duration) {
-        val = easeInOutCubic(currentTime, start, change, duration);
-      }
+    if (this.onWheelStart) this.onWheelStart(direction, this.wheelCount);
 
-      document.documentElement.scrollTo(0, val);
+    setTimeout(() => {
+      setTimeout(() => {
+        this.wheelWorks = true;
 
-      if (currentTime < duration) {
-        setTimeout(animateScroll, increment);
-      } else if (typeof callback !== "undefined") {
-        callback();
-      }
-    } else if (currentTime < duration) {
-      callback();
-    }
-  };
+        this.lastDirection = direction;
 
-  animateScroll();
-}
-
-function getScrollTop() {
-  var doc = document.documentElement;
-  return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-}
-
-function getAverage(elements, number) {
-  var sum = 0;
-
-  var lastElements = elements.slice(Math.max(elements.length - number, 1));
-
-  for (var i = 0; i < lastElements.length; i++) {
-    sum = sum + lastElements[i];
+        if (this.onWheelEnd) this.onWheelEnd(direction, this.wheelCount);
+      }, 30);
+    }, this.duration);
   }
 
-  return Math.ceil(sum / number);
+  updateWheelCount(direction) {
+    if (
+      direction === "down" &&
+      this.lastDirection === "down" &&
+      this.wheelCount < this.wheelCountMax - 1
+    )
+      this.wheelCount++;
+
+    if (
+      direction === "up" &&
+      this.lastDirection === "up" &&
+      this.wheelCount > 1
+    )
+      this.wheelCount--;
+  }
+
+  destroy() {
+    window.removeEventListener("wheel", this.wheelHandler);
+  }
 }
-
-function triggerEvent(name, params) {
-  var event = new CustomEvent(name, params);
-  window.dispatchEvent(event);
-}
-
-window.addEventListener("wheel", MouseWheelHandler, { passive: false });
-
-window.addEventListener(
-  "wheeler",
-  function(e) {
-    scrollTo(
-      sections[
-        e.detail.direction === "down"
-          ? e.detail.wheelCount + 1
-          : e.detail.wheelCount - 1
-      ].offsetTop,
-      e.detail.duration
-    );
-  },
-  false
-);
-
-window.addEventListener("load", function() {
-  scrollTo(0, 50);
-});
