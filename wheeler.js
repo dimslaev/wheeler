@@ -9,11 +9,20 @@ class Wheeler {
     this.duration = options.duration || 600;
     this.scrollings = [];
     this.prevTime = new Date().getTime();
+    this.touchStartY = 0;
+    this.touchEndY = 0;
+    this.touchSensitivity = 5;
     this.lastDirection = "down";
   }
 
   init() {
     window.addEventListener("wheel", this.wheelHandler, { passive: false });
+    window.addEventListener("touchstart", e => {
+      this.touchStartY = e.touches[0].pageY;
+    });
+    window.addEventListener("touchmove", this.touchMoveHandler, {
+      passive: false
+    });
   }
 
   wheelHandler = e => {
@@ -56,6 +65,29 @@ class Wheeler {
     }
 
     return false;
+  };
+
+  touchMoveHandler = e => {
+    if (this.preventNormalScroll) {
+      event.preventDefault();
+    }
+
+    this.touchEndY = e.touches[0].pageY;
+    // console.log("this.touchStartY", this.touchStartY);
+    // console.log("this.touchEndY", this.touchEndY);
+
+    if (this.wheelWorks) {
+      if (
+        Math.abs(this.touchStartY - this.touchEndY) >
+        (window.innerHeight / 100) * this.touchSensitivity
+      ) {
+        if (this.touchStartY > this.touchEndY) {
+          this.wheel("down");
+        } else if (this.touchEndY > this.touchStartY) {
+          this.wheel("up");
+        }
+      }
+    }
   };
 
   wheel(direction) {
