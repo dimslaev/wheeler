@@ -73,8 +73,6 @@ class Wheeler {
     }
 
     this.touchEndY = e.touches[0].pageY;
-    // console.log("this.touchStartY", this.touchStartY);
-    // console.log("this.touchEndY", this.touchEndY);
 
     if (this.wheelWorks) {
       if (
