@@ -16,17 +16,19 @@ class Wheeler {
   }
 
   init() {
-    window.addEventListener("wheel", this.wheelHandler, { passive: false });
+    window.addEventListener("wheel", this.wheelHandler.bind(this), {
+      passive: false
+    });
     window.addEventListener("touchstart", e => {
       this.touchStartY = e.touches[0].pageY;
     });
-    window.addEventListener("touchmove", this.touchMoveHandler, {
+    window.addEventListener("touchmove", this.touchMoveHandler.bind(this), {
       passive: false
     });
   }
 
-  wheelHandler = e => {
-    let curTime = new Date().getTime();
+  wheelHandler(e) {
+    let currTime = new Date().getTime();
 
     let value = e.wheelDelta || -e.deltaY || -e.detail;
     let delta = Math.max(-1, Math.min(1, value));
@@ -41,8 +43,8 @@ class Wheeler {
       event.preventDefault();
     }
 
-    let timeDiff = curTime - this.prevTime;
-    this.prevTime = curTime;
+    let timeDiff = currTime - this.prevTime;
+    this.prevTime = currTime;
 
     // enough to be considered a different scrolling action
     if (timeDiff > 200) {
@@ -65,9 +67,9 @@ class Wheeler {
     }
 
     return false;
-  };
+  }
 
-  touchMoveHandler = e => {
+  touchMoveHandler(e) {
     if (this.preventNormalScroll) {
       event.preventDefault();
     }
@@ -86,7 +88,7 @@ class Wheeler {
         }
       }
     }
-  };
+  }
 
   wheel(direction) {
     this.wheelWorks = false;
