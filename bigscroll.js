@@ -90,14 +90,14 @@ const BigScroll = {
   scroll: function(direction) {
     this.isListening = false;
 
-    this.updateScrollCount(direction);
-
     if (this.onScrollStart) this.onScrollStart(direction, this.scrollCount);
 
     setTimeout(() => {
       this.isListening = true;
 
       this.lastScrollDirection = direction;
+
+      this.updateScrollCount(direction);
 
       if (this.onScrollEnd) this.onScrollEnd(direction, this.scrollCount);
     }, this.scrollDuration + 30);
@@ -106,14 +106,14 @@ const BigScroll = {
     if (
       direction === "down" &&
       this.lastScrollDirection === "down" &&
-      this.scrollCount < this.maxScrollCount - 1
+      this.scrollCount < this.maxScrollCount
     )
       this.scrollCount++;
 
     if (
       direction === "up" &&
       this.lastScrollDirection === "up" &&
-      this.scrollCount > 1
+      this.scrollCount > 0
     )
       this.scrollCount--;
   },
