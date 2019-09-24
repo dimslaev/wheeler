@@ -1,19 +1,28 @@
 window.addEventListener("load", function() {
   utils.scrollTo(0, 50);
 
-  const wheeler = new Wheeler({
+  const bigScroll = Object.create(BigScroll);
+
+  bigScroll.init({
     duration: 600,
-    wheelCountMax: 3,
-    onStart: function(direction, wheelCount) {
-      console.log(`scrolling ${direction}`, wheelCount);
+    maxScrollCount: 3,
+    onStart: function(direction, scrollCount) {
+      console.log(
+        `scroll direction: ${direction} | scrollCount: ${scrollCount}`
+      );
 
       utils.scrollTo(
         direction === "down"
-          ? window.innerHeight * wheelCount
-          : window.innerHeight * (wheelCount - 1)
+          ? window.innerHeight * scrollCount
+          : window.innerHeight * (scrollCount - 1)
+      );
+    },
+    onEnd: function(direction, scrollCount) {
+      console.log(
+        `scroll direction: ${direction} | scrollCount: ${scrollCount}`
       );
     }
   });
 
-  wheeler.init();
+  bigScroll.addListeners();
 });

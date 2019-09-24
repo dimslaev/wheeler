@@ -1,5 +1,5 @@
 const utils = {
-  getAverage: (elements, number) => {
+  getAverage: function(elements, number) {
     let sum = 0;
     let lastElements = elements.slice(Math.max(elements.length - number, 1));
 
@@ -9,8 +9,7 @@ const utils = {
 
     return Math.ceil(sum / number);
   },
-
-  scrollTo: (to, speed = 600) => {
+  scrollTo: function(to, speed = 600) {
     let start = window.pageYOffset;
     let change = to - start;
     let currentTime = 0;
