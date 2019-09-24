@@ -1,7 +1,6 @@
 # BigScroll
 
-Repla
-ce normal scroll behaviour to produce custom effects based on `scrollCount` and `scrollDirection`.
+Replace normal scroll behaviour to produce custom effects based on `scrollCount` and `scrollDirection`.
 
 ### Options
 
