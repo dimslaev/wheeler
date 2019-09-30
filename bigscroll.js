@@ -1,8 +1,8 @@
 const BigScroll = {
   init: function(options) {
-    this.preventNormalScroll = true;
     this.isListening = true;
     this.scrollCount = 0;
+    this.minScrollCount = options.minScrollCount || 0;
     this.maxScrollCount = options.maxScrollCount || 3;
     this.onScrollStart = options.onStart || function() {};
     this.onScrollEnd = options.onEnd || function() {};
@@ -29,9 +29,11 @@ const BigScroll = {
       passive: false
     });
   },
-  wheelHandler: function(e) {
+  wheelHandler: function() {
+    event.preventDefault();
+
     let currTime = performance.now();
-    let delta = e.wheelDelta || -e.deltaY || -e.detail;
+    let delta = event.wheelDelta || -event.deltaY || -event.detail;
     let direction = Math.max(-1, Math.min(1, delta));
     direction = direction < 0 ? "down" : "up";
 
@@ -40,10 +42,6 @@ const BigScroll = {
     }
 
     this.wheel.deltas.push(Math.abs(delta));
-
-    if (this.preventNormalScroll) {
-      event.preventDefault();
-    }
 
     let timeDiff = currTime - this.wheel.lastTime;
     this.wheel.lastTime = currTime;
@@ -64,15 +62,13 @@ const BigScroll = {
       this.scroll(direction);
     }
   },
-  touchStartHandler: function(e) {
-    this.touchStartY = e.touches[0].pageY;
+  touchStartHandler: function() {
+    this.touchStartY = event.touches[0].pageY;
   },
-  touchMoveHandler: function(e) {
-    if (this.preventNormalScroll) {
-      event.preventDefault();
-    }
+  touchMoveHandler: function() {
+    event.preventDefault();
 
-    this.touchEndY = e.touches[0].pageY;
+    this.touchEndY = event.touches[0].pageY;
 
     if (!this.isListening) return;
 
@@ -103,19 +99,20 @@ const BigScroll = {
     }, this.scrollDuration + 30);
   },
   updateScrollCount: function(direction) {
-    if (
-      direction === "down" &&
-      this.lastScrollDirection === "down" &&
-      this.scrollCount < this.maxScrollCount
-    )
-      this.scrollCount++;
+    if (direction === "down" && this.lastScrollDirection === "down")
+      this.setScrollCount(this.scrollCount + 1, true);
 
+    if (direction === "up" && this.lastScrollDirection === "up")
+      this.setScrollCount(this.scrollCount - 1, true);
+  },
+  setScrollCount: function(scrollCount, caller) {
     if (
-      direction === "up" &&
-      this.lastScrollDirection === "up" &&
-      this.scrollCount > 0
+      scrollCount <= this.maxScrollCount &&
+      scrollCount >= this.minScrollCount
     )
-      this.scrollCount--;
+      this.scrollCount = scrollCount;
+    else if (!caller)
+      console.error(`Scroll count ${scrollCount} falls outside min-max range.`);
   },
   destroy: function() {
     window.removeEventListener("wheel", this.wheelHandler);

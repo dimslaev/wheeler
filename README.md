@@ -1,19 +1,26 @@
 # BigScroll
 
-Replace normal scroll behaviour to produce custom effects based on `scrollCount` and `scrollDirection`.
+Replace normal scroll behaviour to produce custom full-page scroll animations.
 
 ### Options
 
-| Option         | Type | Description                                           |
-| -------------- | ---- | ----------------------------------------------------- |
-| direction      | str  | Scroll direction ("down" or "up").                    |
-| scrollCount    | int  | Consecutive scrollings without changing direction     |
-| maxScrollCount | int  | Stop listeners after a given wheel/touchmove counter. |
-| duration       | int  | Duration of animation / interaction in miliseconds.   |
+| Option          | Type | Description                                        |
+| --------------- | ---- | -------------------------------------------------- |
+| scrollDirection | str  | Scroll direction ("down" or "up").                 |
+| scrollCount     | int  | Consecutive scrollings without changing direction. |
+| minScrollCount  | int  | Stop decrementing scrollCount at this value.       |
+| maxScrollCount  | int  | Stop incrementing scrollCount at this value.       |
+| duration        | int  | Scroll animation duration in miliseconds.          |
 
 ### Callbacks
 
-| Callback | Type | Parameters           | Description                          |
-| -------- | ---- | -------------------- | ------------------------------------ |
-| onStart  | func | [direction, counter] | Fires when wheel / touchmove starts. |
-| onEnd    | func | [direction, counter] | Fires when wheel / touchmove ends.   |
+| Callback | Type | Parameters             | Description                          |
+| -------- | ---- | ---------------------- | ------------------------------------ |
+| onStart  | func | direction, scrollCount | Fires when wheel / touchmove starts. |
+| onEnd    | func | direction, scrollCount | Fires when wheel / touchmove ends.   |
+
+### Methods
+
+| Method         | Parameters     | Description                           |
+| -------------- | -------------- | ------------------------------------- |
+| setScrollCount | newScrollCount | Reset scrollCount to a desired value. |
