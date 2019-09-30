@@ -1,14 +1,4 @@
 const utils = {
-  getAverage: function(elements, number) {
-    let sum = 0;
-    let lastElements = elements.slice(Math.max(elements.length - number, 1));
-
-    for (var i = 0; i < lastElements.length; i++) {
-      sum = sum + lastElements[i];
-    }
-
-    return Math.ceil(sum / number);
-  },
   scrollTo: function(to, speed = 600) {
     let start = window.pageYOffset;
     let change = to - start;

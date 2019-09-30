@@ -1,14 +1,12 @@
 window.addEventListener("load", function() {
-  utils.scrollTo(0, 50);
+  var page1 = document.querySelector("#page-1");
+  var h1 = page1.querySelector("h1");
+  var h2 = page1.querySelector("h2");
+  var wings = page1.querySelectorAll(".wing");
+  var page2 = document.querySelector("#page-2");
+  var page3 = document.querySelector("#page-3");
 
-  const page1 = document.querySelector("#page-1");
-  const h1 = page1.querySelector("h1");
-  const h2 = page1.querySelector("h2");
-  const wings = page1.querySelectorAll(".wing");
-  const page2 = document.querySelector("#page-2");
-  const page3 = document.querySelector("#page-3");
-
-  const page1Animation = function() {
+  var page1Animation = function() {
     h1.style.transition = "opacity 0.3s";
     h1.style.opacity = 0;
 
@@ -21,7 +19,7 @@ window.addEventListener("load", function() {
     wings[1].style.transform = "translateX(100%)";
   };
 
-  const page1AnimationReverse = function() {
+  var page1AnimationReverse = function() {
     h1.style.transition = "opacity 0.3s 0.3s";
     h1.style.opacity = 1;
 
@@ -34,13 +32,37 @@ window.addEventListener("load", function() {
     wings[1].style.transform = "translateX(0)";
   };
 
-  const bigScroll = Object.create(BigScroll);
+  var scrollY = function(y, speed = 600) {
+    var start = window.pageYOffset;
+    var change = y - start;
+    var currentTime = 0;
+    var increment = 20;
 
-  bigScroll.init({
+    var easeInOutCubic = function(t, b, c, d) {
+      if ((t /= d / 2) < 1) return (c / 2) * t * t * t + b;
+      return (c / 2) * ((t -= 2) * t * t + 2) + b;
+    };
+
+    var animateScroll = function() {
+      var val = y;
+      currentTime += increment;
+      val = easeInOutCubic(currentTime, start, change, speed);
+
+      window.scrollTo(0, val);
+      if (currentTime < speed) {
+        setTimeout(animateScroll, increment);
+      }
+    };
+    setTimeout(animateScroll, 0);
+  };
+
+  scrollY(0, 0);
+
+  BigScroll.init({
     duration: 600,
     minScrollCount: 0,
     maxScrollCount: 3,
-    onStart: function(scrollDirection, scrollCount) {
+    onScrollStart: function(scrollDirection, scrollCount) {
       console.log(
         `scroll direction: ${scrollDirection} | scrollCount: ${scrollCount}`
       );
@@ -51,7 +73,7 @@ window.addEventListener("load", function() {
         }
 
         if (scrollCount > 0) {
-          utils.scrollTo(window.innerHeight * scrollCount);
+          scrollY(window.innerHeight * scrollCount);
         }
       }
       if (scrollDirection === "up") {
@@ -60,20 +82,19 @@ window.addEventListener("load", function() {
         } else if (scrollCount === 1) {
           page1AnimationReverse();
         } else if (scrollCount === 3) {
-          utils.scrollTo(0);
-          bigScroll.setScrollCount(0);
+          scrollY(0);
           page1AnimationReverse();
         } else {
-          utils.scrollTo(window.innerHeight * (scrollCount - 2));
+          scrollY(window.innerHeight * (scrollCount - 2));
         }
       }
     },
-    onEnd: function(scrollDirection, scrollCount) {
+    onScrollEnd: function(scrollDirection, scrollCount) {
       console.log(
         `scroll direction: ${scrollDirection} | scrollCount: ${scrollCount}`
       );
+      if (window.pageYOffset === 0 && scrollCount === 2)
+        BigScroll.setScrollCount(0);
     }
   });
-
-  bigScroll.addListeners();
 });

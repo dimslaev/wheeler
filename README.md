@@ -14,10 +14,10 @@ Replace normal scroll behaviour to produce custom full-page scroll animations.
 
 ### Callbacks
 
-| Callback | Type | Parameters             | Description                          |
-| -------- | ---- | ---------------------- | ------------------------------------ |
-| onStart  | func | direction, scrollCount | Fires when wheel / touchmove starts. |
-| onEnd    | func | direction, scrollCount | Fires when wheel / touchmove ends.   |
+| Callback      | Type | Parameters             | Description                          |
+| ------------- | ---- | ---------------------- | ------------------------------------ |
+| onScrollStart | func | direction, scrollCount | Fires when wheel / touchmove starts. |
+| onScrollEnd   | func | direction, scrollCount | Fires when wheel / touchmove ends.   |
 
 ### Methods
 
