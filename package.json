@@ -1,0 +1,35 @@
+{
+  "name": "bigscroll",
+  "version": "1.0.0",
+  "description": "Replace normal scroll behaviour to produce custom full-page scroll animations.",
+  "scripts": {
+    "minify": "./node_modules/uglify-js/bin/uglifyjs --compress --mangle  -o ./dist/bigscroll.min.js ./src/bigscroll.js",
+    "lint": "./node_modules/.bin/eslint ./src/bigscroll.js",
+    "copy": "cp ./src/bigscroll.js ./dist",
+    "build": "npm run lint && npm run copy && npm run minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimslaev/BigScroll.git"
+  },
+  "keywords": [
+    "fullpage",
+    "scroll",
+    "animation",
+    "mouse",
+    "wheel",
+    "touchmove"
+  ],
+  "author": "dimslaev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dimslaev/BigScroll/issues"
+  },
+  "homepage": "https://github.com/dimslaev/BigScroll#readme",
+  "dependencies": {
+    "uglify-js": "^3.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.0"
+  }
+}

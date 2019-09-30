@@ -1,0 +1,13 @@
+{
+  "env": {
+    "amd": true,
+    "browser": true,
+    "commonjs": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "rules": {}
+}
