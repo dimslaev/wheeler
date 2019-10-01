@@ -10,7 +10,7 @@
   // VARS
 
   var BigScroll = {};
-  var settings;
+  var settings = {};
   var defaults = {
     minScrollCount: 0,
     maxScrollCount: 3,
@@ -28,61 +28,25 @@
   var touchStartY = 0;
   var touchEndY = 0;
 
-  // UTILS
+  // INIT
 
-  var getAverage = function(elements, number) {
-    var sum = 0;
-    var lastElements = elements.slice(Math.max(elements.length - number, 1));
+  function init(options) {
+    destroy(); // prevent multiple initializations
 
-    for (var i = 0; i < lastElements.length; i++) {
-      sum = sum + lastElements[i];
-    }
+    settings = extend(defaults, options || {});
 
-    return Math.ceil(sum / number);
-  };
+    window.addEventListener("wheel", wheelHandler, {
+      passive: false
+    });
+    window.addEventListener("touchstart", touchStartHandler);
+    window.addEventListener("touchmove", touchMoveHandler, {
+      passive: false
+    });
+  }
 
-  var extend = function(a, b) {
-    for (var key in b)
-      if (Object.prototype.hasOwnProperty.call(b, key)) a[key] = b[key];
-    return a;
-  };
+  // HANDLERS
 
-  // METHODS
-
-  var setScrollCount = function(count, caller) {
-    if (count <= settings.maxScrollCount && count >= settings.minScrollCount)
-      scrollCount = count;
-    else if (!caller)
-      console.error("Scroll count" + count + "falls outside min-max range.");
-  };
-
-  var updateScrollCount = function(direction) {
-    if (direction === "down" && lastScrollDirection === "down")
-      setScrollCount(scrollCount + 1, true);
-
-    if (direction === "up" && lastScrollDirection === "up")
-      setScrollCount(scrollCount - 1, true);
-  };
-
-  var scroll = function(direction) {
-    isListening = false;
-
-    if (settings.onScrollStart) settings.onScrollStart(direction, scrollCount);
-
-    setTimeout(function() {
-      isListening = true;
-
-      lastScrollDirection = direction;
-
-      updateScrollCount(direction);
-
-      if (settings.onScrollEnd) settings.onScrollEnd(direction, scrollCount);
-    }, settings.scrollDuration + 30);
-  };
-
-  // LISTENERS
-
-  var wheelHandler = function() {
+  function wheelHandler() {
     event.preventDefault();
 
     var currTime = performance.now();
@@ -114,13 +78,13 @@
     if (isAccelerating) {
       scroll(direction);
     }
-  };
+  }
 
-  var touchStartHandler = function() {
+  function touchStartHandler() {
     touchStartY = event.touches[0].pageY;
-  };
+  }
 
-  var touchMoveHandler = function() {
+  function touchMoveHandler() {
     event.preventDefault();
 
     touchEndY = event.touches[0].pageY;
@@ -137,13 +101,44 @@
         scroll("up");
       }
     }
-  };
+  }
 
-  // INIT & DESTROY
+  //  METHODS
 
-  var destroy = function() {
-    if (!settings) return;
+  function scroll(direction) {
+    isListening = false;
 
+    if (settings.onScrollStart) settings.onScrollStart(direction, scrollCount);
+
+    setTimeout(function() {
+      isListening = true;
+
+      lastScrollDirection = direction;
+
+      updateScrollCount(direction);
+
+      if (settings.onScrollEnd) settings.onScrollEnd(direction, scrollCount);
+    }, settings.scrollDuration + 30);
+  }
+
+  function updateScrollCount(direction) {
+    if (direction === "down" && lastScrollDirection === "down")
+      setScrollCount(scrollCount + 1, true);
+
+    if (direction === "up" && lastScrollDirection === "up")
+      setScrollCount(scrollCount - 1, true);
+  }
+
+  function setScrollCount(count, caller) {
+    if (count <= settings.maxScrollCount && count >= settings.minScrollCount)
+      scrollCount = count;
+    else if (!caller)
+      console.error("Scroll count" + count + "falls outside min-max range.");
+  }
+
+  //  DESTROY
+
+  function destroy() {
     window.removeEventListener("wheel", wheelHandler);
     window.removeEventListener("touchstart", touchStartHandler);
     window.removeEventListener("touchmove", touchMoveHandler);
@@ -151,22 +146,29 @@
     scrollCount = 0;
     isListening = true;
     lastScrollDirection = "down";
-    settings = null;
-  };
+    settings = {};
+  }
 
-  var init = function(options) {
-    destroy(); // prevent multiple initializations
+  // UTILS
 
-    settings = extend(defaults, options || {});
+  function getAverage(elements, number) {
+    var sum = 0;
+    var lastElements = elements.slice(Math.max(elements.length - number, 1));
 
-    window.addEventListener("wheel", wheelHandler.bind(this), {
-      passive: false
-    });
-    window.addEventListener("touchstart", touchStartHandler.bind(this));
-    window.addEventListener("touchmove", touchMoveHandler.bind(this), {
-      passive: false
-    });
-  };
+    for (var i = 0; i < lastElements.length; i++) {
+      sum = sum + lastElements[i];
+    }
+
+    return Math.ceil(sum / number);
+  }
+
+  function extend(a, b) {
+    for (var key in b)
+      if (Object.prototype.hasOwnProperty.call(b, key)) a[key] = b[key];
+    return a;
+  }
+
+  // PUBLIC API
 
   BigScroll.init = init;
   BigScroll.destroy = destroy;
