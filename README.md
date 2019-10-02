@@ -9,17 +9,12 @@ Inspired by Fullpage.js, yet allowing to decide on animation effects yourself, a
 | Option          | Type | Description                                        |
 | --------------- | ---- | -------------------------------------------------- |
 | scrollDirection | str  | Scroll direction ("down" or "up").                 |
-| scrollCount     | int  | Consecutive scrollings without changing direction. |
-| minScrollCount  | int  | Stop decrementing scrollCount at this value.       |
-| maxScrollCount  | int  | Stop incrementing scrollCount at this value.       |
-| duration        | int  | Scroll animation duration in miliseconds.          |
-
-### Callbacks
-
-| Callback      | Type | Parameters             | Description                          |
-| ------------- | ---- | ---------------------- | ------------------------------------ |
-| onScrollStart | func | direction, scrollCount | Fires when wheel / touchmove starts. |
-| onScrollEnd   | func | direction, scrollCount | Fires when wheel / touchmove ends.   |
+| scrollCount     | num  | Consecutive scrollings without changing direction. |
+| minScrollCount  | num  | Stop decrementing scrollCount at this value.       |
+| maxScrollCount  | num  | Stop incrementing scrollCount at this value.       |
+| duration        | num  | Scroll animation duration in miliseconds.          |
+| onScrollStart | func | Fires when wheel / touchmove starts. Parameters [direction, scrollCount]|
+| onScrollEnd   | func | Fires when wheel / touchmove ends.  Parameters [direction, scrollCount] |
 
 ### Methods
 
