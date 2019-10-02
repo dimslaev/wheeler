@@ -1,6 +1,7 @@
-# BigScroll
+### BigScroll
 
-Replace normal scroll behaviour to produce custom full-page scroll animations.
+Scroll hijacker for custom full-page scroll animations. 
+[Example here.](https://dimslaev.github.io/BigScroll/example/example.html)
 
 ### Options
 
