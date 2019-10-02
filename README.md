@@ -1,6 +1,7 @@
 ### BigScroll
 
-Scroll hijacker for custom full-page scroll animations. 
+Inspired by Fullpage.js, yet allowing to decide on animation effects yourself, and only 1.77kb minified. 
+
 [Example here.](https://dimslaev.github.io/BigScroll/example/example.html)
 
 ### Options
