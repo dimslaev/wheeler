@@ -1,6 +1,6 @@
 ### Wheeler
 
-Inspired by Fullpage.js, yet allowing to decide on animation effects yourself, and only 1.77kb minified. 
+Perform custom animations depending on wheel count and direction. Only 1.77kb minified. 
 
 [Example here.](https://dimslaev.github.io/wheeler/example/example.html)
 
