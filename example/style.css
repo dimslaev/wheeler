@@ -4,11 +4,17 @@ body {
   font-family: monospace;
 }
 
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
 section {
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  height: 100vh;
   padding: 0 25px;
 }
 

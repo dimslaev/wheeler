@@ -2,24 +2,23 @@
   if (typeof exports === "object" && typeof module === "object")
     module.exports = factory();
   else if (typeof define === "function" && define.amd) define(factory);
-  else if (typeof exports === "object") exports["BigScroll"] = factory();
-  else root["BigScroll"] = factory();
+  else if (typeof exports === "object") exports["Wheeler"] = factory();
+  else root["Wheeler"] = factory();
 })(typeof self !== "undefined" ? self : this, function() {
   "use strict";
 
   // VARS
 
-  var BigScroll = {};
-  var settings = {};
+  var Wheeler = {};
   var defaults = {
     minScrollCount: 0,
     maxScrollCount: 3,
     onScrollStart: function() {},
     onScrollEnd: function() {},
     scrollDuration: 600,
-    touchSensitivity: 5
+    touchSensitivity: 5,
   };
-
+  var settings = {};
   var scrollCount = 0;
   var isListening = true;
   var lastScrollDirection = "down";
@@ -36,11 +35,11 @@
     settings = extend(defaults, options || {});
 
     window.addEventListener("wheel", wheelHandler, {
-      passive: false
+      passive: false,
     });
     window.addEventListener("touchstart", touchStartHandler);
     window.addEventListener("touchmove", touchMoveHandler, {
-      passive: false
+      passive: false,
     });
   }
 
@@ -170,9 +169,9 @@
 
   // PUBLIC API
 
-  BigScroll.init = init;
-  BigScroll.destroy = destroy;
-  BigScroll.setScrollCount = setScrollCount;
+  Wheeler.init = init;
+  Wheeler.destroy = destroy;
+  Wheeler.setScrollCount = setScrollCount;
 
-  return BigScroll;
+  return Wheeler;
 });

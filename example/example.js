@@ -58,13 +58,13 @@ window.addEventListener("load", function() {
 
   scrollY(0, 0);
 
-  BigScroll.init({
+  Wheeler.init({
     duration: 600,
     minScrollCount: 0,
     maxScrollCount: 3,
     onScrollStart: function(scrollDirection, scrollCount) {
       console.log(
-        `scroll direction: ${scrollDirection} | scrollCount: ${scrollCount}`
+        `scroll direction: ${scrollDirection} | scrollCount: ${scrollCount}`,
       );
 
       if (scrollDirection === "down") {
@@ -91,10 +91,10 @@ window.addEventListener("load", function() {
     },
     onScrollEnd: function(scrollDirection, scrollCount) {
       console.log(
-        `scroll direction: ${scrollDirection} | scrollCount: ${scrollCount}`
+        `scroll direction: ${scrollDirection} | scrollCount: ${scrollCount}`,
       );
       if (window.pageYOffset === 0 && scrollCount === 2)
-        BigScroll.setScrollCount(0);
-    }
+        Wheeler.setScrollCount(0);
+    },
   });
 });

@@ -1,16 +1,16 @@
 {
-  "name": "bigscroll",
+  "name": "wheeler",
   "version": "1.0.0",
   "description": "Replace normal scroll behaviour to produce custom full-page scroll animations.",
   "scripts": {
-    "minify": "./node_modules/uglify-js/bin/uglifyjs --compress --mangle  -o ./dist/bigscroll.min.js ./src/bigscroll.js",
-    "lint": "./node_modules/.bin/eslint ./src/bigscroll.js",
-    "copy": "cp ./src/bigscroll.js ./dist",
+    "minify": "./node_modules/uglify-js/bin/uglifyjs --compress --mangle  -o ./dist/wheeler.min.js ./src/wheeler.js",
+    "lint": "./node_modules/.bin/eslint ./src/wheeler.js",
+    "copy": "cp ./src/wheeler.js ./dist",
     "build": "npm run lint && npm run copy && npm run minify"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dimslaev/BigScroll.git"
+    "url": "git+https://github.com/dimslaev/wheeler.git"
   },
   "keywords": [
     "fullpage",
@@ -23,9 +23,9 @@
   "author": "dimslaev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dimslaev/BigScroll/issues"
+    "url": "https://github.com/dimslaev/wheeler/issues"
   },
-  "homepage": "https://github.com/dimslaev/BigScroll#readme",
+  "homepage": "https://github.com/dimslaev/wheeler#readme",
   "dependencies": {
     "uglify-js": "^3.6.0"
   },
