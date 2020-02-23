@@ -1,8 +1,8 @@
-### BigScroll
+### Wheeler
 
 Inspired by Fullpage.js, yet allowing to decide on animation effects yourself, and only 1.77kb minified. 
 
-[Example here.](https://dimslaev.github.io/BigScroll/example/example.html)
+[Example here.](https://dimslaev.github.io/wheeler/example/example.html)
 
 ### Options
 
