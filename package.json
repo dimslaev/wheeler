@@ -4,9 +4,7 @@
   "description": "Replace normal scroll behaviour to produce custom full-page scroll animations.",
   "scripts": {
     "minify": "./node_modules/uglify-js/bin/uglifyjs --compress --mangle  -o ./dist/wheeler.min.js ./src/wheeler.js",
-    "lint": "./node_modules/.bin/eslint ./src/wheeler.js",
-    "copy": "cp ./src/wheeler.js ./dist",
-    "build": "npm run lint && npm run copy && npm run minify"
+    "build": "npm run minify && cp ./src/smoothScrollTo.min.js ./dist/"
   },
   "repository": {
     "type": "git",
@@ -28,8 +26,5 @@
   "homepage": "https://github.com/dimslaev/wheeler#readme",
   "dependencies": {
     "uglify-js": "^3.6.0"
-  },
-  "devDependencies": {
-    "eslint": "^6.5.0"
   }
 }
