@@ -32,6 +32,9 @@ window.addEventListener("load", function() {
     wings[1].style.transform = "translateX(0)";
   };
 
+  // Go back to top on page refesh
+  smoothScrollTo("#page-1");
+
   Wheeler.init({
     duration: 600,
     minScrollCount: 0,
@@ -55,8 +58,6 @@ window.addEventListener("load", function() {
           // do nothing
         } else if (scrollCount === 1) {
           page1AnimationReverse();
-        } else if (scrollCount === 2) {
-          smoothScrollTo("#page-1");
         } else {
           smoothScrollTo("#page-" + (scrollCount - 1));
         }
