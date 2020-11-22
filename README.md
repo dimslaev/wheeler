@@ -2,7 +2,7 @@
 
 Perform custom animations depending on wheel count and direction. Only 1.77kb minified. 
 
-[Example here.](https://dimslaev.github.io/wheeler/example/example.html)
+[Example here.](https://dimslaev.github.io/wheeler/example/)
 
 ### Options
 
